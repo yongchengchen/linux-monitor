@@ -52,6 +52,8 @@ data=$( jq -n \
                   --arg unique_name "$unique_name" \
                   --arg host_name "$host_name" \
                   --arg os_version "$os_version" \
+                  --arg run_days  "$os_running_day" \
+                  --arg start_time  "$os_start_time" \
                   --arg kernel_version "$code_version" \
                   --argjson storage "$storage" \
                   --argjson memory "$mem" \
