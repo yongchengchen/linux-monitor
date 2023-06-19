@@ -47,6 +47,12 @@ vmstatus="$(vmstat | grep -v "memory" | grep -v "free" | \
       end
       ')"
 
+if [ "$vmstatus" = "" ]; then
+        read -r vmstatus < /tmp/vmstat.txt
+else
+        echo $vmstatus > /tmp/vmstat.txt
+fi
+
 data=$( jq -n \
                   --arg currtime "$currtime" \
                   --arg unique_name "$unique_name" \
