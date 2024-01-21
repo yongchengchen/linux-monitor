@@ -65,6 +65,7 @@ data=$( jq -n \
                   --arg start_time  "$os_start_time" \
                   --arg kernel_version "$code_version" \
                   --arg slavedbstat "$slavedbstat" \
+		  --arg dbproclist "$dbproclist" \
                   --argjson storage "$storage" \
                   --argjson memory "$mem" \
                   --argjson vmstatus "$vmstatus" \
