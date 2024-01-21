@@ -53,6 +53,9 @@ else
         echo $vmstatus > /tmp/vmstat.txt
 fi
 
+slavedbstat="$(/usr/local/bin/dbslavemonitor.sh)"
+dbproclist="$(/usr/local/bin/dbproclist.sh)"
+
 data=$( jq -n \
                   --arg currtime "$currtime" \
                   --arg unique_name "$unique_name" \
@@ -61,11 +64,12 @@ data=$( jq -n \
                   --arg run_days  "$os_running_day" \
                   --arg start_time  "$os_start_time" \
                   --arg kernel_version "$code_version" \
+                  --arg slavedbstat "$slavedbstat" \
                   --argjson storage "$storage" \
                   --argjson memory "$mem" \
                   --argjson vmstatus "$vmstatus" \
                   --arg top10 "$cpu_process_top10" \
-                  '{ unique_name: $unique_name, host_name: $host_name, "@timestamp": $currtime, os_version: $os_version, kernel_version: $kernel_version, run_days: $run_days, start_time: $start_time, storage: $storage, memory: $memory, vmstatus: $vmstatus, top10: $top10}' )
+                  '{ unique_name: $unique_name, host_name: $host_name, "@timestamp": $currtime, os_version: $os_version, kernel_version: $kernel_version, slavedbstat: $slavedbstat, dbproclist: $dbproclist, run_days: $run_days, start_time: $start_time, storage: $storage, memory: $memory, vmstatus: $vmstatus, top10: $top10}' )
 #echo $data
 
 hsetData=$(jq -n \
