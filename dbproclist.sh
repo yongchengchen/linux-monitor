@@ -23,7 +23,7 @@ fi
 #echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | grep -v 'Reading from net' | awk '$6 > 0 { print $0 }'
 #echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | grep -v 'Reading from net' | awk '$6 > 0 { print $0 }' | sed '1d'
 #echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | grep -v 'Reading from net' | sed '1d' | awk '$6 > 0 { print $0 }' | sed 's/$/<br>/'
-proclist=$(echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | sed '1d' | awk '$6 > 100 { print $0 }' | sed 's/\(.*\)\.ap-southeast-2\.compute\.internal/\1/' | sed 's/$/<br>/')
+proclist=$(echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v "Reading from net" | grep -v 'Sleep' | sed '1d' | awk '$6 > 100 { print $0 }' | sed 's/\(.*\)\.ap-southeast-2\.compute\.internal/\1/' | sed 's/$/<br>/')
 #echo "$MYSQL_RESULT" | grep -v 'Sleep' | sed '1d' | awk '$6 > 0 { print $0 }' | sed 's/$/<br>/'
 if [ "$proclist" = "" ]; then
         echo "Mysql process list are good"
