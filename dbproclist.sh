@@ -23,10 +23,16 @@ fi
 #echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | grep -v 'Reading from net' | awk '$6 > 0 { print $0 }'
 #echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | grep -v 'Reading from net' | awk '$6 > 0 { print $0 }' | sed '1d'
 #echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v 'Sleep' | grep -v 'Reading from net' | sed '1d' | awk '$6 > 0 { print $0 }' | sed 's/$/<br>/'
-proclist=$(echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -v "Waiting for master to send event" | grep -v "Reading from net" | grep -v 'Sleep' | sed '1d' | awk '$6 > 100 { print $0 }' | sed 's/\(.*\)\.ap-southeast-2\.compute\.internal/\1/' | sed 's/$/<br>/')
+proclist=$(echo "$MYSQL_RESULT" | grep -v 'Binlog Dump' | grep -vi 'close stmt' | grep -v "Waiting for master to send event" | grep -v "Reading from net" | grep -v 'Sleep' | sed '1d' | awk '$6 > 100 { print $0 }' | sed 's/\(.*\)\.ap-southeast-2\.compute\.internal/\1/' | sed 's/$/<br>/')
 #echo "$MYSQL_RESULT" | grep -v 'Sleep' | sed '1d' | awk '$6 > 0 { print $0 }' | sed 's/$/<br>/'
 if [ "$proclist" = "" ]; then
-        echo "Mysql process list are good"
+        THRESHOLD=100
+        process_count=$(echo "$MYSQL_RESULT" | grep -c "^[[:space:]]*[0-9]")
+        if [ "$process_count" -gt "$THRESHOLD" ]; then
+                echo "Too many mysql process($process_count)"
+        else
+                echo "Mysql process list are good"
+        fi
 else
         echo $proclist
 fi
